@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reserva_musica_flutter/screens/catalogo_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +10,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/catalogo',
+      routes: {
+        // '/': (context) => const SplashScreen(),
+        '/catalogo': (context) => const CatalogoScreen(),
+        // '/favoritos': (context) => const FavoritosScreen(),
+      },
     );
   }
 }
