@@ -62,6 +62,7 @@ class _DetalleScreenState extends State<DetalleScreen> {
                     ),
                     onPressed: () {
                       setState(() {
+                        // navigate to confirmation screen
                         isReserved = !isReserved;
                       });
                     },

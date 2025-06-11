@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reserva_musica_flutter/pantalla_bienvenida.dart';
 import 'package:reserva_musica_flutter/screens/detalle_screen.dart';
 
 class CatalogoScreen extends StatefulWidget {
@@ -128,30 +129,39 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
             icon: Icon(Icons.favorite_border),
             tooltip: 'Clases Favoritas',
             onPressed: () {
-              // Navigator.pushNamed(context, FavoritosScreen.routeName);
+              // navegar hasta la venta de clases favoritas
+            },
+          ),IconButton(
+            icon: Icon(Icons.exit_to_app),
+            tooltip: 'Cerrar sesión',
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
             },
           ),
         ],
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: searchController,
-                    decoration: const InputDecoration(
-                      hintText: 'Buscar clases...',
-                      border: OutlineInputBorder(),
+          Container(
+            color: Colors.lightBlue[50],
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchController,
+                      decoration: const InputDecoration(
+                        hintText: 'Buscar clases...',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSubmitted: (value) => {},
                     ),
-                    onSubmitted: (value) => {},
                   ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(icon: Icon(Icons.search), onPressed: () {}),
-              ],
+                  const SizedBox(width: 8),
+                  IconButton(icon: Icon(Icons.search), onPressed: () {}),
+                ],
+              ),
             ),
           ),
           Expanded(
