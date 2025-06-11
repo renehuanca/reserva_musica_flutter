@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:reserva_musica_flutter/screens/catalogo_screen.dart';
+import 'pantalla_bienvenida.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(ReservaMusicaApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class ReservaMusicaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'ReservaMúsica',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/catalogo',
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      initialRoute: '/',
       routes: {
-        // '/': (context) => const SplashScreen(),
-        '/catalogo': (context) => const CatalogoScreen(),
-        // '/favoritos': (context) => const FavoritosScreen(),
+        '/': (context) => PantallaBienvenida(),
+        /*'/inicio-sesion': (context) => PantallaInicioSesion(),
+        '/registro': (context) => PantallaRegistro(),*/
       },
     );
   }
