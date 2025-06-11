@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'pantalla_bienvenida.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(ReservaMusicaApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class ReservaMusicaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: 'ReservaMúsica',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => PantallaBienvenida(),
+        /*'/inicio-sesion': (context) => PantallaInicioSesion(),
+        '/registro': (context) => PantallaRegistro(),*/
+      },
     );
   }
 }
