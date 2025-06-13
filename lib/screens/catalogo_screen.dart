@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:reserva_musica_flutter/pantalla_bienvenida.dart';
 import 'package:reserva_musica_flutter/screens/detalle_screen.dart';
+import 'package:reserva_musica_flutter/screens/favoritos_screen.dart';
 
 class CatalogoScreen extends StatefulWidget {
   const CatalogoScreen({super.key});
-
+  
   @override
   State<CatalogoScreen> createState() => _CatalogoScreenState();
 }
@@ -118,6 +119,15 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
     },
   ];
 
+void actualizarClase(Map<String, dynamic> claseActualizada) {
+    setState(() {
+      final index = classList.indexWhere((c) => c['id'] == claseActualizada['id']);
+      if (index != -1) {
+        classList[index] = claseActualizada;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,12 +136,21 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
         title: Text('Catálogo'),
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite_border),
+            icon: Icon(Icons.favorite),
             tooltip: 'Clases Favoritas',
             onPressed: () {
-              // navegar hasta la venta de clases favoritas
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => FavoritosScreen(
+                    clases: classList,
+                    onUpdate: actualizarClase,
+                  ),
+                ),
+              );
             },
-          ),IconButton(
+          ),
+          IconButton(
             icon: Icon(Icons.exit_to_app),
             tooltip: 'Cerrar sesión',
             onPressed: () {
@@ -142,26 +161,22 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            color: Colors.lightBlue[50],
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: searchController,
-                      decoration: const InputDecoration(
-                        hintText: 'Buscar clases...',
-                        border: OutlineInputBorder(),
-                      ),
-                      onSubmitted: (value) => {},
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: searchController,
+                    decoration: const InputDecoration(
+                      hintText: 'Buscar clases...',
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                ],
-              ),
+                ),
+                const SizedBox(width: 8),
+                IconButton(icon: Icon(Icons.search), onPressed: () {}),
+              ],
             ),
           ),
           Expanded(
@@ -170,10 +185,7 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
               itemBuilder: (context, index) {
                 final classItem = classList[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
@@ -204,30 +216,30 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
                         Text(
                           'Estado: ${classItem['isReserved'] ? 'Reservado' : 'Disponible'}',
                           style: TextStyle(
-                            color:
-                                classItem['isReserved']
-                                    ? Colors.red
-                                    : Colors.green,
+                            color: classItem['isReserved'] ? Colors.red : Colors.green,
                           ),
                         ),
                         Align(
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Colors.blue[400], // Cambia el color aquí
+                              backgroundColor: Colors.blue[400],
                             ),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder:
-                                      (context) =>
-                                          DetalleScreen(classItem: classItem),
+                                  builder: (context) => DetalleScreen(
+                                    classItem: classItem,
+                                    onUpdate: actualizarClase,
+                                  ),
                                 ),
                               );
                             },
-                            child: const Text('MÁS INFORMACIÓN', style: TextStyle(color: Colors.white,),)
+                            child: const Text(
+                              'MÁS INFORMACIÓN',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
@@ -241,6 +253,6 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
       ),
     );
   }
-
   void masInformacion(int id) {}
 }
+

@@ -2,89 +2,66 @@ import 'package:flutter/material.dart';
 
 class DetalleScreen extends StatefulWidget {
   final Map<String, dynamic> classItem;
+  final Function(Map<String, dynamic>) onUpdate;
 
-  const DetalleScreen({super.key, required this.classItem});
+  DetalleScreen({
+    required this.classItem,
+    required this.onUpdate,
+  });
 
   @override
   State<DetalleScreen> createState() => _DetalleScreenState();
 }
 
 class _DetalleScreenState extends State<DetalleScreen> {
-  late bool isReserved;
-  late bool isFavorite;
+  late Map<String, dynamic> clase;
 
   @override
   void initState() {
     super.initState();
-    isReserved = widget.classItem['isReserved'] ?? false;
-    isFavorite = widget.classItem['isFavorite'] ?? false;
+    clase = Map<String, dynamic>.from(widget.classItem);
+  }
+
+  void toggleReserva() {
+    setState(() {
+      clase['isReserved'] = !clase['isReserved'];
+    });
+    widget.onUpdate(clase);
+  }
+
+  void toggleFavorito() {
+    setState(() {
+      clase['isFavorite'] = !clase['isFavorite'];
+    });
+    widget.onUpdate(clase);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
-      appBar: AppBar(
-        title: Text(widget.classItem['instrument'] ?? 'Detalle'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+      appBar: AppBar(title: Text(clase['instrument'])),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
           children: [
-            Image.asset(
-              widget.classItem['instrumentImageUrl'],
-              height: 200,
-              errorBuilder: (_, __, ___) =>
-                  const Icon(Icons.music_note, size: 200),
-            ),
+            Image.asset(clase['instrumentImageUrl'], height: 200),
             const SizedBox(height: 16),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage:
-                    AssetImage(widget.classItem['teacherImageUrl']),
+            Text(clase['description']),
+            const SizedBox(height: 16),
+            Text('Horario: ${clase['schedule']}'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: toggleReserva,
+              child: Text(
+                clase['isReserved'] ? 'Cancelar Reserva' : 'Reservar Clase',
               ),
-              title: Text('Profesor: ${widget.classItem['teacher']}', 
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Horario: ${widget.classItem['schedule']}'),
             ),
-            const SizedBox(height: 12),
-            Text(
-              widget.classItem['description'],
-              style: const TextStyle(fontSize: 16),
+            ElevatedButton(
+              onPressed: toggleFavorito,
+              child: Text(
+                clase['isFavorite'] ? 'Quitar de Favoritos' : 'Agregar a Favoritos',
+              ),
             ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isReserved ? Colors.red : Colors.green,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        // navigate to confirmation screen
-                        isReserved = !isReserved;
-                      });
-                    },
-                    child: Text(isReserved ? 'Cancelar reserva' : 'Reservar', 
-                        style: const TextStyle(color: Colors.white)),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                IconButton(
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : null,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isFavorite = !isFavorite;
-                    });
-                  },
-                  tooltip: 'Agregar a favoritos',
-                ),
-              ],
-            )
           ],
         ),
       ),

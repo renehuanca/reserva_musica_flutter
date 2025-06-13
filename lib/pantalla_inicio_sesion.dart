@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reserva_musica_flutter/screens/catalogo_screen.dart';
 import 'pantalla_registro.dart';
 
 class PantallaInicioSesion extends StatefulWidget {
@@ -17,31 +18,22 @@ class _PantallaInicioSesionState extends State<PantallaInicioSesion> {
     super.dispose();
   }
 
-  void iniciarSesion() {
-    String correo = controladorCorreo.text;
-    String contrasena = controladorContrasena.text;
+void iniciarSesion() {
+  String correo = controladorCorreo.text;
+  String contrasena = controladorContrasena.text;
 
-    // Lógica simulada de inicio de sesión
-    if (correo.isNotEmpty && contrasena.isNotEmpty) {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text('Inicio de sesión'),
-          content: Text('Sesión iniciada con éxito'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Aceptar'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor, complete todos los campos')),
-      );
-    }
+  // Lógica simulada de inicio de sesión
+  if (correo.isNotEmpty && contrasena.isNotEmpty) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => CatalogoScreen()),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Por favor, complete todos los campos')),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -105,4 +97,5 @@ class _PantallaInicioSesionState extends State<PantallaInicioSesion> {
     );
   }
 }
+
 
